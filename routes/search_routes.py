@@ -26,3 +26,4 @@ def search_books():
         flash('Search functionality is not yet implemented.', 'error')
     
     return render_template('search.html', books=books, search_term=search_term, search_type=search_type)
+

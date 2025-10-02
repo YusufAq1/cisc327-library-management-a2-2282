@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>👤 Patron Report</h2>
+
+    <form method="POST" action="{{ url_for('patron.patron_home') }}">
+        <div class="form-group">
+            <label for="patron_id">Patron ID *</label>
+            <input type="text" id="patron_id" name="patron_id" pattern="[0-9]{6}" maxlength="6" required
+                   value="{{ request.form.patron_id if request.form.patron_id else '' }}">
+            <small style="color: #666;">6-digit library card number</small>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Get Report</button>
+            <a href="{{ url_for('catalog.catalog') }}" class="btn" style="margin-left: 10px;">Cancel</a>
+        </div>
+    </form>
+
+    {% if report and report.success %}
+        <h3>Borrowed Books</h3>
+        {% if report.data.borrowed_books %}
+            <table>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Author</th>
+                    <th>Borrow Date</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Late Fee</th>
+                </tr>
+                {% for book in report.data.borrowed_books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.borrow_date }}</td>
+                    <td>{{ book.due_date }}</td>
+                    <td>
+                        {% if book.is_overdue %}
+                            <span class="status-unavailable">Overdue</span>
+                        {% else %}
+                            <span class="status-available">On Time</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ book.late_fee }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <th colspan="5" style="text-align: right;">Total Late Fees Owed:</th>
+                    <th>${{ "%.2f"|format(report.data.total_fees) }}</th>
+                </tr>
+            </table>
+        {% else %}
+            <p>No books currently borrowed.</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

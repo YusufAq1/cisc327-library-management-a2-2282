@@ -202,6 +202,27 @@ def search_books_in_catalog(search_term: str, search_type: str) -> List[Dict]:
     TODO: Implement R6 as per requirements
     """
     
+    if search_type.lower() == 'isbn':
+        book = get_book_by_isbn(search_term)
+        return [book]
+    
+    all_books = get_all_books()
+    search_term_lower = search_term.lower()
+    if search_type.lower() == 'title':
+        results = [
+            book for book in all_books 
+            if search_term_lower in book['title'].lower()
+        ]
+        return results
+
+    if search_type.lower() == 'author':
+        results = [
+            book for book in all_books 
+            if search_term_lower in book['author'].lower()
+        ]
+        
+        return results
+        
     return []
 
 def get_patron_status_report(patron_id: str) -> Dict:
@@ -210,4 +231,42 @@ def get_patron_status_report(patron_id: str) -> Dict:
     
     TODO: Implement R7 as per requirements
     """
-    return {}
+    if not patron_id or not patron_id.isdigit() or len(patron_id) != 6:
+        return {
+            "success": False,
+            "message": "Invalid patron ID. Must be exactly 6 digits.",
+            "data": {}
+        }
+
+    borrowed_books = get_patron_borrowed_books(patron_id)
+    borrow_count = get_patron_borrow_count(patron_id)
+
+    total_fees = 0.0
+    report_books = []
+
+    for book in borrowed_books:
+        late_fee_info = calculate_late_fee_for_book(patron_id, book["book_id"])
+        total_fees += late_fee_info["fee_amount"]
+
+        report_books.append({
+            "book_id": book["book_id"],
+            "title": book["title"],
+            "author": book["author"],
+            "borrow_date": book["borrow_date"].strftime("%Y-%m-%d"),
+            "due_date": book["due_date"].strftime("%Y-%m-%d"),
+            "is_overdue": book["is_overdue"],
+            "late_fee": f"${late_fee_info['fee_amount']:.2f}"
+        })
+
+    report = {
+        "success": True,
+        "message": f"Patron {patron_id} currently has {borrow_count} borrowed books.",
+        "data": {
+            "patron_id": patron_id,
+            "borrow_count": borrow_count,
+            "borrowed_books": report_books,
+            "total_fees": round(total_fees, 2)
+        }
+    }
+
+    return report
