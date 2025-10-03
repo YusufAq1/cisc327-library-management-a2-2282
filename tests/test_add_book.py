@@ -4,6 +4,7 @@ from library_service import (
 )
 import random
 
+
 def test_add_book_valid_input():
     """Test adding a book with valid input."""
     # generate random isbn
