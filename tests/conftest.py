@@ -1,5 +1,20 @@
 import pytest
-from library_service import borrow_book_by_patron, add_book_to_catalog
+import sqlite3
+import os
+import sys
+
+# Add the parent directory to Python path so imports work
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from library_service import (
+    add_book_to_catalog,
+    borrow_book_by_patron,
+    return_book_by_patron,
+    calculate_late_fee_for_book,
+    search_books_in_catalog,
+    get_patron_status_report
+)
+from database import init_database
 from database import get_db_connection
 
 @pytest.fixture(autouse=True)
@@ -33,3 +48,8 @@ def setup_db(monkeypatch):
 
     yield
     conn.close()
+
+def test_borrow_valid_book():
+    success, message = borrow_book_by_patron("123456", 4)
+    assert success is True
+    assert "successfully borrowed" in message.lower()
