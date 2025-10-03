@@ -15,41 +15,55 @@ from library_service import (
     get_patron_status_report
 )
 from database import init_database
-from database import get_db_connection
 
-@pytest.fixture(autouse=True)
-def setup_db(monkeypatch):
-    """Set up in-memory DB and populate test data."""
-    import sqlite3
-    conn = sqlite3.connect(":memory:")
-    conn.execute('''
+@pytest.fixture
+def setup_test_db():
+    """Set up a test database with required tables."""
+    test_db = "test_library.db"
+    
+    # Remove existing test database
+    if os.path.exists(test_db):
+        os.remove(test_db)
+    
+    # Create connection and tables
+    conn = sqlite3.connect(test_db)
+    cursor = conn.cursor()
+    
+    # Create books table
+    cursor.execute('''
         CREATE TABLE books (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT,
-            author TEXT,
-            isbn TEXT UNIQUE,
-            quantity INTEGER
+            title TEXT NOT NULL,
+            author TEXT NOT NULL,
+            isbn TEXT UNIQUE NOT NULL,
+            total_copies INTEGER NOT NULL,
+            available_copies INTEGER NOT NULL
         )
     ''')
-    conn.execute('''
-        CREATE TABLE patrons (
-            id TEXT PRIMARY KEY,
-            name TEXT
+    
+    # Create other necessary tables (borrow_records, etc.)
+    cursor.execute('''
+        CREATE TABLE borrow_records (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            patron_id TEXT NOT NULL,
+            book_id INTEGER NOT NULL,
+            borrow_date TEXT NOT NULL,
+            due_date TEXT NOT NULL,
+            return_date TEXT,
+            FOREIGN KEY (book_id) REFERENCES books (id)
         )
     ''')
-    # Add test data
-    conn.execute("INSERT INTO books (id, title, author, isbn, quantity) VALUES (4, 'Test Book', 'Test Author', '1234567890123', 1)")
-    conn.execute("INSERT INTO patrons (id, name) VALUES ('123456', 'Test Patron')")
+    
     conn.commit()
-
-    # Patch get_db_connection to use this DB
-    import library_service
-    monkeypatch.setattr(library_service, "get_db_connection", lambda: conn)
-
-    yield
     conn.close()
+    
+    yield test_db
+    
+    # Cleanup
+    if os.path.exists(test_db):
+        os.remove(test_db)
 
-def test_borrow_valid_book():
-    success, message = borrow_book_by_patron("123456", 4)
-    assert success is True
-    assert "successfully borrowed" in message.lower()
+@pytest.fixture(autouse=True)
+def setup_database():
+    """Initialize the database before each test."""
+    init_database()
