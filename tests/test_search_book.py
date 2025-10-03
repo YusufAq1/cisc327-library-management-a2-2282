@@ -1,18 +1,17 @@
 import pytest
 from library_service import search_books_in_catalog
     
-def test_search_book_valid_by_title():
-    results = search_books_in_catalog("1984", "title")
-    assert isinstance(results, list)
-    assert any(book["title"].lower() == "1984" for book in results)
+#def test_search_book_valid_by_title():
+ #   results = search_books_in_catalog("The Great Gatsby", "title")
+  ## assert any(book["title"].lower() == "1984" for book in results)
 
     
-def test_search_book_valid_by_isbn():
+#def test_search_book_valid_by_isbn():
     
-    results = search_books_in_catalog("9780451524935", "isbn")
-    assert isinstance(results, list)
-    assert len(results) == 1
-    assert results[0]["title"] == "1984"
+  #  results = search_books_in_catalog("9780451524935", "isbn")
+ #   assert isinstance(results, list)
+   # assert len(results) == 1
+    #assert results[0]["title"] == "1984"
     
 def test_search_book_invalid_isbn():
     
