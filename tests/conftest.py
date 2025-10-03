@@ -16,20 +16,18 @@ from library_service import (
 )
 from database import init_database
 
-@pytest.fixture
-def setup_test_db():
-    """Set up a test database with required tables."""
+@pytest.fixture(autouse=True)
+def setup_database():
+    """Initialize the database before each test with seed data."""
     test_db = "test_library.db"
-    
-    # Remove existing test database
+
     if os.path.exists(test_db):
         os.remove(test_db)
-    
-    # Create connection and tables
+
     conn = sqlite3.connect(test_db)
     cursor = conn.cursor()
-    
-    # Create books table
+
+    # Create tables
     cursor.execute('''
         CREATE TABLE books (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,8 +38,6 @@ def setup_test_db():
             available_copies INTEGER NOT NULL
         )
     ''')
-    
-    # Create other necessary tables (borrow_records, etc.)
     cursor.execute('''
         CREATE TABLE borrow_records (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,17 +49,22 @@ def setup_test_db():
             FOREIGN KEY (book_id) REFERENCES books (id)
         )
     ''')
-    
+    cursor.execute('''
+        CREATE TABLE patrons (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL
+        )
+    ''')
+
+    # ✅ Seed test data
+    cursor.execute("INSERT INTO books (id, title, author, isbn, total_copies, available_copies) VALUES (4, 'Test Book', 'Author A', '1111111111111', 2, 2)")
+    cursor.execute("INSERT INTO patrons (id, name) VALUES ('123456', 'Test Patron')")
+    cursor.execute("INSERT INTO patrons (id, name) VALUES ('654321', 'Other Patron')")
+
     conn.commit()
     conn.close()
-    
-    yield test_db
-    
-    # Cleanup
+
+    yield
+
     if os.path.exists(test_db):
         os.remove(test_db)
-
-@pytest.fixture(autouse=True)
-def setup_database():
-    """Initialize the database before each test."""
-    init_database()
