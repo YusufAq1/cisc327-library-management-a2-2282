@@ -3,7 +3,7 @@ from library_service import borrow_book_by_patron
 
 def test_borrow_valid_book():
     
-    success, message = borrow_book_by_patron("123456", 4)
+    success, message = borrow_book_by_patron("123456", 9)
     assert success is True
     assert "successfully borrowed" in message.lower()
 
