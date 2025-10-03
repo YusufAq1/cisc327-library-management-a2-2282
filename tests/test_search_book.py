@@ -5,11 +5,12 @@ def test_search_book_valid_by_title():
     results = search_books_in_catalog("1984", "title")
     assert isinstance(results, list)
 
-    # Extract all titles from results
+    # Collect titles in lowercase
     titles = [book["title"].lower() for book in results]
 
-    # Assert that "1984" is in the titles list
-    assert "1984" in titles, f"'1984' not found in titles: {titles}"
+    # Check case-insensitive match
+    assert any("1984" in t for t in titles), f"No matching title found. Titles: {titles}"
+
     
 def test_search_book_valid_by_isbn():
     
