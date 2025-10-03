@@ -1,17 +1,22 @@
 import pytest
 from library_service import search_books_in_catalog
     
-#def test_search_book_valid_by_title():
- #   results = search_books_in_catalog("The Great Gatsby", "title")
-  ## assert any(book["title"].lower() == "1984" for book in results)
+def test_search_book_valid_by_title():
+    results = search_books_in_catalog("1984", "title")
+    assert isinstance(results, list)
 
+    # Extract all titles from results
+    titles = [book["title"].lower() for book in results]
+
+    # Assert that "1984" is in the titles list
+    assert "1984" in titles, f"'1984' not found in titles: {titles}"
     
-#def test_search_book_valid_by_isbn():
+def test_search_book_valid_by_isbn():
     
-  #  results = search_books_in_catalog("9780451524935", "isbn")
- #   assert isinstance(results, list)
-   # assert len(results) == 1
-    #assert results[0]["title"] == "1984"
+    results = search_books_in_catalog("9780451524935", "isbn")
+    assert isinstance(results, list)
+    assert len(results) == 1
+    assert results[0]["title"] == "1984"
     
 def test_search_book_invalid_isbn():
     
@@ -28,6 +33,7 @@ def test_search_books_by_author():
     results = search_books_in_catalog("George Orwell", "author")
     assert isinstance(results, list)
     assert any("Orwell" in book["author"] for book in results)
+    
 def test_search_books_case_insensitive():
     
     results = search_books_in_catalog("george orwell", "author")
