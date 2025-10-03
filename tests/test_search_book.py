@@ -3,9 +3,9 @@ from library_service import search_books_in_catalog
 
 def test_search_book_valid_by_title():
    
-    results = search_books_in_catalog("The Great Gatsby", "title")
+    results = search_books_in_catalog("1984", "title")
     assert isinstance(results, list)
-    assert any("The Great Gatbsy" in book["title"] for book in results)
+    assert any("1984" in book["title"] for book in results)
 
 def test_search_book_valid_by_isbn():
     
