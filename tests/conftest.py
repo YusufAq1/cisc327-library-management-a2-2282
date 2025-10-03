@@ -1,9 +1,20 @@
 import pytest
 import sqlite3
 import os
+import sys
+
+# Add the parent directory to Python path so imports work
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from library_service import (
-    add_book_to_catalog
+    add_book_to_catalog,
+    borrow_book_by_patron,
+    return_book_by_patron,
+    calculate_late_fee_for_book,
+    search_books_in_catalog,
+    get_patron_status_report
 )
+from database import init_database
 
 @pytest.fixture
 def setup_test_db():
@@ -36,9 +47,9 @@ def setup_test_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             patron_id TEXT NOT NULL,
             book_id INTEGER NOT NULL,
-            borrow_date DATE NOT NULL,
-            due_date DATE NOT NULL,
-            return_date DATE,
+            borrow_date TEXT NOT NULL,
+            due_date TEXT NOT NULL,
+            return_date TEXT,
             FOREIGN KEY (book_id) REFERENCES books (id)
         )
     ''')
@@ -51,3 +62,8 @@ def setup_test_db():
     # Cleanup
     if os.path.exists(test_db):
         os.remove(test_db)
+
+@pytest.fixture(autouse=True)
+def setup_database():
+    """Initialize the database before each test."""
+    init_database()
