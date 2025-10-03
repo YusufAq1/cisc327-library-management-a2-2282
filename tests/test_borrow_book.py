@@ -23,6 +23,6 @@ def test_borrow_invalid_patron():
 
 def test_borrow_unavailable_book():
   
-    success, message = borrow_book_by_patron("654321", 1)
+    success, message = borrow_book_by_patron("654321", 3)
     assert success is False
     assert "not available" in message.lower()
