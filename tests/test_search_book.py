@@ -1,15 +1,10 @@
 import pytest
 from library_service import search_books_in_catalog
     
-def test_search_book_valid_by_title():
-    results = search_books_in_catalog("1984", "title")
-    assert isinstance(results, list)
-
-    # Collect titles in lowercase
-    titles = [book["title"].lower() for book in results]
-
-    # Check case-insensitive match
-    assert any("1984" in t for t in titles), f"No matching title found. Titles: {titles}"
+def test_search_book_valid_by_title(): 
+    results = search_books_in_catalog("1984", "title") 
+    assert isinstance(results, list) 
+    assert any(book["title"].lower() == "1984" for book in results)
 
     
 def test_search_book_valid_by_isbn():
