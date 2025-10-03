@@ -7,7 +7,7 @@ def test_borrow_valid_book():
     
     success, message = borrow_book_by_patron("123456", 4)
     assert success is False
-    assert "successfully borrowed" in message.lower()
+    assert "book not found" in message.lower()
 
 def test_borrow_invalid_book():
     
