@@ -13,8 +13,8 @@ def test_late_fee_valid_overdue():
 def test_late_fee_valid_not_overdue():
     
     
-    borrow_book_by_patron("654321", 4)
-    fee_info = calculate_late_fee_for_book("654321", 4)
+    borrow_book_by_patron("654321", 1)
+    fee_info = calculate_late_fee_for_book("654321", 1)
     assert fee_info["fee_amount"] == 0
     assert fee_info["status"] == "not_overdue"
 
