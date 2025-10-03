@@ -136,8 +136,8 @@ def return_book_by_patron(patron_id: str, book_id: int) -> Tuple[bool, str]:
             return True, (
                 f'Book "{book["title"]}" has been returned. '
                 f'Late fee: ${late_fees["fee_amount"]:.2f}, '
-                f'Days overdue: {late_fees["days_overdue"]}, '
-                f'status: {late_fees['status']}'
+                f'Days overdue: {late_fees["days_overdue"]} '
+               
             )
     
     return False, f'Patron has not borrowed book {book_id}'
