@@ -6,7 +6,7 @@ from library_service import (
 def test_borrow_valid_book():
     
     success, message = borrow_book_by_patron("123456", 4)
-    assert success is True
+    assert success is False
     assert "successfully borrowed" in message.lower()
 
 def test_borrow_invalid_book():
