@@ -1,7 +1,9 @@
 import pytest
 import sqlite3
 import os
-from library_service import add_book_to_catalog
+from library_service import (
+    add_book_to_catalog
+)
 
 @pytest.fixture
 def setup_test_db():
