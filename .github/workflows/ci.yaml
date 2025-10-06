@@ -31,7 +31,8 @@ jobs:
       
       - name: Run tests with coverage
         run: |
-          python -m pytest --cov=. --cov-branch --cov-report=xml tests/
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
+          pytest --cov --cov-branch --cov-report=xml tests/
       
       
       - name: Upload coverage reports to Codecov
