@@ -2,7 +2,6 @@ import pytest
 from flask import Flask
 import os
 
-
 app = Flask(__name__)
 app.config['TESTING'] = True
 app.config['SECRET_KEY'] = 'test-secret-key'
