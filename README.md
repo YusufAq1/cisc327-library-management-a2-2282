@@ -48,4 +48,5 @@ See [`student_instructions.md`](student_instructions.md) for complete assignment
 - [Pytest framework](https://realpython.com/pytest-python-testing/)
 - [Python Blueprint](https://flask.palletsprojects.com/en/stable/blueprints)
 
+[![CI](https://github.com/YusufAq1/cisc327-library-management-a2-2282/actions/workflows/ci.yaml/badge.svg)](https://github.com/YusufAq1/cisc327-library-management-a2-2282/actions/workflows/ci.yaml)
 
