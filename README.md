@@ -50,3 +50,4 @@ See [`student_instructions.md`](student_instructions.md) for complete assignment
 
 [![CI](https://github.com/YusufAq1/cisc327-library-management-a2-2282/actions/workflows/ci.yaml/badge.svg)](https://github.com/YusufAq1/cisc327-library-management-a2-2282/actions/workflows/ci.yaml)
 
+[![codecov](https://codecov.io/github/YusufAq1/cisc327-library-management-a2-2282/graph/badge.svg?token=7VLN9LLLPS)](https://codecov.io/github/YusufAq1/cisc327-library-management-a2-2282)
