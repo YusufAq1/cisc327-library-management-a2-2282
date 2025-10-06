@@ -25,4 +25,4 @@ def test_borrow_unavailable_book():
   
     success, message = borrow_book_by_patron("654321", 3)
     assert success is False
-    assert "book not found" in message.lower()
+    assert "this book is currently not available" in message.lower()
