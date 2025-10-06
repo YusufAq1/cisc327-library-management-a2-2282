@@ -26,8 +26,10 @@ jobs:
 
       - name: Initialize database
         run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
           python -c "from database import init_database, add_sample_data; init_database(); add_sample_data()"
 
       - name: Run tests with coverage
         run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
           pytest --cov=library_service --cov=database --cov-report=xml tests/
