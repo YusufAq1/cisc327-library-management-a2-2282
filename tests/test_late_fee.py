@@ -30,3 +30,12 @@ def test_late_fee_invalid_patron():
     
     assert fee_info is None or fee_info == {}
 
+
+
+def test_late_fee_valid_overdue_2():
+    
+    fee_info = calculate_late_fee_for_book("123456", 3)
+    assert isinstance(fee_info, dict)
+    assert "fee_amount" in fee_info
+    assert "status" in fee_info
+    assert fee_info["status"] in ["over_due", "not_overdue"]

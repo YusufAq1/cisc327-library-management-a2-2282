@@ -34,3 +34,20 @@ def test_add_book_invalid_isbn():
     
     assert success == False
     assert "isbn must be 13 digits not characters" in message.lower()
+    
+
+# Added for coverage
+# add book with no title
+def test_add_book_invalid_title():
+    """Test adding a book with invalid isbn"""
+    success, message = add_book_to_catalog("", "Test Author", "1234567800123", 0)
+    
+    assert success == False
+    assert "title is required." in message.lower()
+
+def test_add_book_invalid_author():
+    """Test adding a book with invalid isbn"""
+    success, message = add_book_to_catalog("AA", "", "1234567800123", 0)
+    
+    assert success == False
+    assert "author is required." in message.lower()
