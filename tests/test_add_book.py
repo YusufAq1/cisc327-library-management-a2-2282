@@ -51,3 +51,10 @@ def test_add_book_invalid_author():
     
     assert success == False
     assert "author is required." in message.lower()
+
+def test_add_book_invalid_author2():
+    """Test adding a book with invalid isbn"""
+    success, message = add_book_to_catalog("AA", "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "1234567800123", 0)
+    
+    assert success == False
+    assert "author must be less than 100 characters." in message.lower()

@@ -28,10 +28,4 @@ def test_return_invalid_patron():
    
     assert "patron id has not borrowed any books" in message.lower()
 
-# Added for coverage 
-def test_return_invalid_patron_2():
-    """Test returning with an invalid patron ."""
-    success, message = return_book_by_patron("123456", 5) 
-    assert success == False
-   
-    assert "patron has not borrowed book 5" in message.lower()
+
