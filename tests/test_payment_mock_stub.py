@@ -100,7 +100,8 @@ def test_pay_late_fees_network_error(stub_late_fee_and_book):
     
     mock_gateway.process_payment.assert_called_once()
     
-    
+ 
+ 
 
 # ADDED FOR COVERAGE 
 # Test 6: invalid amount exceeds limit 
@@ -170,8 +171,6 @@ def test_pay_late_fee_invalid_patron(mocker):
     assert "invalid patron id" in msg.lower()
     
 
-# test 10: 
-    
     
 # refund late feepayment testing 
 
@@ -245,6 +244,8 @@ def test_refund_late_fee_payment_invalid_amounts_max():
     
 # ADDED FOR COVERAGE
 # test 6: exception thrown
+
+
 def test_refund_late_fee_payment_exception():
    
     mock_gateway = Mock(spec=PaymentGateway)
