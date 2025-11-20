@@ -26,6 +26,7 @@ jobs:
           pip install requests
           pip install pytest-mock
           pip install pytest-playwright
+          playwright install
 
       - name: Initialize database
         run: |
